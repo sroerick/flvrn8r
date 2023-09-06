@@ -1,0 +1,42 @@
+# This is FLVRTRN
+## Welcome to FLVRTWN
+
+### how to access Raspberry pi:
+ssh roerick@raspberrypi.local
+sometimes I find that this weird little DNS Alias does not work. IP address is static, so 
+ssh roerick@192.168.1.143 should work. 
+pw is 'coffee'
+
+##TODO make the python script run at startup
+
+### main.py
+main.py is the primary code which starts the MQTT server
+
+### import.py takes the input csv and creates a Sqlite database
+two tables are created
+1. recipes - this is a 1 to 1 copy of the import CSV 
+2. lookup - I took the output of recipes.columns, deleted the beans, and then assigned addresses
+
+### lookup.py
+lookup.py is the primary set of functions which navigates the SQL table. When you scan a barcode, this is called. 
+It hits the recipe table, gets the appropriate recipe, and prints the information associated with the recipe. 
+Then it hits the look up table and gets the box address (1-8), the pod address (1-8), and the flavor amount (what units are these lol)
+
+### wifi.ino
+This is the code which gets flashed to each ESP32 using ArduinoIDE 
+TODO Map address - currently, Arduino IDE just receives pin number 
+
+
+
+### Addresses 
+Each flavor is assigned a box and a pod in the 'lookup' table. 
+There are 8 pods per box. 
+
+
+
+
+
+## Concerns
+- I think that using jumper cables on the box was quite frankly a mistake. These should be soldered on. 
+- The motor did not survive my ~12 hour stress test. It seemed to be running find at the end, although extremely hot and it kind of smelled bad. 
+- I'm not sure what happens in the case of an MQTT desync
