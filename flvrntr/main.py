@@ -1,11 +1,11 @@
 import sqlite3
+import time
 import pandas as pd
 
-# import time
 import paho.mqtt.client as mqtt
 from .lookup import get_recipe, get_flavor_info, lookup_flavors
 
-quantity_multiplier = 1
+quantity_multiplier = 4
 topic = "FLVR"
 conn = sqlite3.connect('flvr.db')
 cursor = conn.cursor()
@@ -39,7 +39,9 @@ while True:
     signals = lookup_flavors(flavors)
     for signal in signals:
         # import ipdb; ipdb.set_trace()
+        topic = "BOX" + str(signal['box'])
         payload = str({'box': signal['box'],
                    'pod': signal['pod'],
                    'amount': signal['value']})
         client.publish(topic, payload=payload)
+        time.sleep(2)
